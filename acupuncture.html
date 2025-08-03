@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCM & Acupuncture - Prime Motion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        :root {
+            --primary-gold: #D4AF37;
+            --primary-navy: #1B2951;
+            --accent-teal: #2DD4BF;
+            --soft-cream: #FDF8F0;
+            --warm-gray: #F7F5F3;
+            --text-charcoal: #2C2C2C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-charcoal);
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #2C3E50 50%, var(--primary-gold) 100%);
+            position: relative;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+            transform: translateY(-5px);
+        }
+        
+        .package-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .package-card:hover::before {
+            left: 100%;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-gold);
+        }
+        
+        .luxury-button {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #F4D03F 100%);
+            color: var(--primary-navy);
+            font-weight: 600;
+            padding: 16px 32px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .luxury-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .luxury-button:hover::before {
+            left: 100%;
+        }
+        
+        .luxury-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            margin: 80px 0;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .doctor-photo {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-gold);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body style="background-color: var(--soft-cream);">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="font-display text-2xl font-bold text-gradient">Prime Motion</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-primary-gold transition">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-primary-gold transition">About Dr. Krisnan</a>
+                    <a href="#services" class="text-gray-700 hover:text-primary-gold transition">Services</a>
+                    <a href="#treatments" class="text-gray-700 hover:text-primary-gold transition">Treatments</a>
+                    <a href="#faq" class="text-gray-700 hover:text-primary-gold transition">FAQ</a>
+                </div>
+                <button class="luxury-button" onclick="window.open('https://primemotionphysio.com/#contact', '_blank')">
+                    Book Consultation
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-gradient text-white min-h-screen flex items-center justify-center relative pt-20">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="floating-animation">
+                <h1 class="font-display text-6xl md:text-7xl font-bold mb-6" data-aos="fade-up" data-aos-duration="1000">
+                    TCM & Acupuncture
+                </h1>
+                <div class="w-24 h-1 mx-auto mb-6" style="background: var(--primary-gold);" data-aos="fade-up" data-aos-delay="200"></div>
+                <p class="text-2xl md:text-3xl font-light mb-8 opacity-90" data-aos="fade-up" data-aos-delay="400">
+                    Ancient Wisdom. Modern Science.
+                </p>
+                <p class="text-lg md:text-xl mb-12 max-w-3xl mx-auto opacity-80" data-aos="fade-up" data-aos-delay="600">
+                    Experience the healing power of Traditional Chinese Medicine and acupuncture, expertly delivered by Malaysia's leading TCM practitioner.
+                </p>
+                <button class="luxury-button text-lg" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})" data-aos="fade-up" data-aos-delay="800">
+                    Meet Dr. Krisnan
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Dr. Krisnan Section -->
+    <section id="about" class="py-20" style="background: linear-gradient(135deg, var(--warm-gray) 0%, #ffffff 100%);">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Meet Dr. Devanandhini Krisnan
+                </h2>
+                <p class="text-xl text-gray-600 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    TCM Practitioner | Pain Medicine Specialist
+                </p>
+                <p class="text-lg italic text-gray-500 mb-8" data-aos="fade-up" data-aos-delay="300">
+                    "Bridging Ancient Wisdom and Modern Science for Holistic Healing"
+                </p>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="400"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right">
+                    <div class="text-center lg:text-left">
+                        <!-- Placeholder for doctor photo -->
+                        <div class="doctor-photo mx-auto lg:mx-0 mb-8 bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                            <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            At <strong>Prime Motion Physiotherapy Centre</strong>, <strong>Dr. Devanandhini Krisnan</strong> combines <strong>Western medical expertise</strong> with <strong>Traditional Chinese Medicine (TCM)</strong> to deliver <strong>evidence-based, personalized care</strong>. With over <strong>18 years</strong> of experience, she is a trusted name in <strong>pain relief, rehabilitation, and holistic wellness</strong> in Malaysia.
+                        </p>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left">
+                    <div class="package-card rounded-3xl p-8">
+                        <h3 class="font-display text-3xl font-semibold text-gradient mb-6">Beyond the Clinic</h3>
+                        <p class="text-gray-600 mb-6">A respected voice in <strong>integrative medicine</strong>, Dr. Krisnan:</p>
+                        <ul class="space-y-4 text-gray-600">
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3">📢</span>
+                                <span>Speaks at <strong>medical conferences</strong> on <em>TCM's role in chronic pain management</em>.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3">🏥</span>
+                                <span>Advocates for <strong>TCM integration in Malaysian healthcare</strong>.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3">🎤</span>
+                                <span>Educates communities on <strong>non-pharmacological pain management</strong> through workshops.</span>
+                            </li>
+                        </ul>
+                        <div class="mt-8 p-6 bg-gradient-to-r from-primary-gold/10 to-accent-teal/10 rounded-2xl">
+                            <p class="text-gray-700 italic text-lg">
+                                "Whether you're an executive battling chronic pain, a new mother in recovery, or an athlete seeking rehabilitation—Dr. Krisnan crafts a <strong>personalized path to your wellness</strong>."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credentials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Unparalleled Credentials
+                </h2>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="package-card rounded-3xl p-8 glow-effect" data-aos="fade-right">
+                    <h3 class="font-display text-3xl font-semibold text-gradient mb-6">Western Medical Expertise</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-primary-gold rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>MBBS (MAHE, Manipal)</strong> – Foundation in Western medicine.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-primary-gold rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>Master of Medicine in Anaesthesiology (USM)</strong> – Specialized in pain control.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-primary-gold rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>Fellowship in Pain Medicine (MOH Malaysia)</strong> – Recognized by the Ministry of Health.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-primary-gold rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>Fellowship in Pain Management (Singapore General Hospital)</strong> – Advanced international training.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 glow-effect" data-aos="fade-left">
+                    <h3 class="font-display text-3xl font-semibold text-gradient mb-6">Traditional Chinese Medicine (TCM) Mastery</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-accent-teal rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>Licensed TCM Practitioner (Malaysia T&CM Council)</strong> – Accredited under <em>Traditional & Complementary Medicine Act 2016 (Act 775)</em>.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-2 h-2 bg-accent-teal rounded-full mt-3 mr-4 flex-shrink-0"></span>
+                            <span><strong>NIOSH Certification</strong> – Occupational health and safety assessor.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="py-20" style="background: linear-gradient(135deg, var(--warm-gray) 0%, #ffffff 100%);">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Why Choose Dr. Krisnan?
+                </h2>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up">
+                    <h3 class="font-display text-3xl font-semibold text-gradient mb-6">1. Dual Expertise for Precision Healing</h3>
+                    <p class="text-gray-600 text-lg mb-4">
+                        One of Malaysia's few physicians dually trained in <strong>Western pain medicine</strong> and <strong>TCM</strong>, Dr. Krisnan:
+                    </p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="text-primary-gold mr-3">•</span>
+                            <span>Diagnoses root causes using <strong>advanced diagnostics</strong> (MRI/X-ray correlations, detailed assessments).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-primary-gold mr-3">•</span>
+                            <span>Treats holistically with <strong>acupuncture and cupping therapies</strong> to restore <em>Qi</em> flow.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="font-display text-3xl font-semibold text-gradient mb-6">2. Specialized Pain & Wellness Solutions</h3>
+                    <p class="text-gray-600 text-lg mb-6">Her integrative approach excels in:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Chronic Pain</strong> – Sciatica, arthritis, migraines.</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Post-Surgical/Injury Recovery</strong> – Accelerates healing after knee/back surgeries.</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Post-Stroke Rehabilitation</strong> – Improves movement, speech, and nerve function.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Cancer Recovery Support</strong> – Reduces chemotherapy side effects (nausea, numbness, fatigue).</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Women's Health</strong> – Hormonal balance, postpartum recovery, fertility support.</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-2xl mr-3">🔹</span>
+                                <span><strong>Lifestyle Ailments</strong> – Desk-related stiffness, stress-induced insomnia, <em>"heatiness."</em></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="font-display text-3xl font-semibold text-gradient mb-6">3. Proven, Patient-Centered Results</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">✅</span>
+                            <span><strong>Success Stories</strong> – Documented improvements in pain relief and mobility.</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-2xl mr-3">✅</span>
+                            <span><strong>Collaborative Care</strong> – Works with physiotherapists for <strong>faster, lasting recovery</strong>.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="package-card rounded-3xl p-12 text-center glow-effect" data-aos="fade-up">
+                <h2 class="font-display text-4xl font-bold text-gradient mb-8">Her Healing Philosophy</h2>
+                <blockquote class="text-2xl text-gray-700 italic leading-relaxed max-w-4xl mx-auto">
+                    "True healing addresses the body, mind, and energy. By merging modern pain science with TCM's ancient wisdom, I help patients reclaim their vitality—naturally and sustainably."
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20" style="background: linear-gradient(135deg, var(--warm-gray) 0%, #ffffff 100%);">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Why Malaysians Choose TCM & Acupuncture
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="200">
+                    Rooted in <strong>5,000 years of Asian healing traditions</strong>, Traditional Chinese Medicine (TCM) and acupuncture offer a <strong>natural, non-invasive, and drug-free approach</strong> to wellness. By stimulating meridian points with ultra-fine sterile needles, we help address:
+                </p>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="400"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="package-card rounded-3xl p-8 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-2xl">💪</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Pain Relief</h3>
+                    <p class="text-gray-600">Effective for <strong>urban lifestyle ailments</strong> (chronic back/neck pain, joint stiffness, migraines) and <strong>sports injuries</strong>.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-2xl">🧘</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Stress & Fatigue Management</h3>
+                    <p class="text-gray-600">Counters <em>"heatiness"</em> (体内热 <em>"re qi"</em>), insomnia, and mental exhaustion common in busy professionals.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-2xl">🌿</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Digestive & Immunity Support</h3>
+                    <p class="text-gray-600">Alleviates <strong>bloating, IBS</strong>, and frequent colds—often linked to diet and climate.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-2xl">👩</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Women's Health</h3>
+                    <p class="text-gray-600">Regulates <strong>hormonal imbalances</strong>, menstrual discomfort (<em>period cramps</em>), and postpartum recovery.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-2xl">🏥</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Chronic Condition Care</h3>
+                    <p class="text-gray-600">Supports <strong>diabetes, hypertension</strong>, and post-stroke rehabilitation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Treatments Section -->
+    <section id="treatments" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Treatment Highlights
+                </h2>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="package-card rounded-3xl p-8 text-center glow-effect" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Medical Acupuncture</h3>
+                    <p class="text-gray-600 text-lg">Targeted pain and inflammation relief using precise needle placement and modern techniques.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center glow-effect" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-3xl">🔥</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Cupping Therapy</h3>
+                    <p class="text-gray-600 text-lg">Enhances circulation and muscle recovery through traditional cupping techniques.</p>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8 text-center glow-effect" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-gold to-accent-teal flex items-center justify-center">
+                        <span class="text-3xl">📋</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-semibold text-gradient mb-4">Lifestyle Guidance</h3>
+                    <p class="text-gray-600 text-lg">Preventive strategies and personalized advice to maintain long-term wellness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20" style="background: linear-gradient(135deg, var(--warm-gray) 0%, #ffffff 100%);">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Patient Success Stories
+                </h2>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-primary-gold to-accent-teal rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">SL</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Sarah Lim</h4>
+                            <p class="text-gray-600 text-sm">Marketing Executive</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">
+                        "After months of chronic back pain from desk work, Dr. Krisnan's acupuncture treatments gave me the relief I desperately needed. Her holistic approach addressed not just my pain but also my stress levels."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-primary-gold to-accent-teal rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">RK</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Raj Kumar</h4>
+                            <p class="text-gray-600 text-sm">Professional Athlete</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">
+                        "Dr. Krisnan's sports rehabilitation program helped me recover from a knee injury faster than I expected. Her combination of Western medicine and TCM is truly remarkable."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-3xl p-8" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-primary-gold to-accent-teal rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">MH</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Maria Hassan</h4>
+                            <p class="text-gray-600 text-sm">New Mother</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">
+                        "The postpartum recovery support I received was incredible. Dr. Krisnan's gentle approach and expertise helped me regain my strength and energy naturally."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold text-gradient mb-6" data-aos="fade-up">
+                    Frequently Asked Questions
+                </h2>
+                <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="package-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                    <button class="w-full text-left flex justify-between items-center" onclick="toggleFAQ(1)">
+                        <h3 class="font-display text-xl font-semibold text-gradient">Is acupuncture painful?</h3>
+                        <span id="faq-icon-1" class="text-2xl text-primary-gold">+</span>
+                    </button>
+                    <div id="faq-content-1" class="hidden mt-4 text-gray-600">
+                        <p>Acupuncture uses ultra-fine, sterile needles that are much thinner than injection needles. Most patients experience minimal to no discomfort, often describing the sensation as a gentle tingling or warmth.</p>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                    <button class="w-full text-left flex justify-between items-center" onclick="toggleFAQ(2)">
+                        <h3 class="font-display text-xl font-semibold text-gradient">How many sessions will I need?</h3>
+                        <span id="faq-icon-2" class="text-2xl text-primary-gold">+</span>
+                    </button>
+                    <div id="faq-content-2" class="hidden mt-4 text-gray-600">
+                        <p>Treatment duration varies based on your condition and individual response. Acute conditions may improve in 3-6 sessions, while chronic conditions typically require 8-12 sessions for optimal results. Dr. Krisnan will create a personalized treatment plan during your consultation.</p>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300">
+                    <button class="w-full text-left flex justify-between items-center" onclick="toggleFAQ(3)">
+                        <h3 class="font-display text-xl font-semibold text-gradient">Is TCM safe to combine with Western medicine?</h3>
+                        <span id="faq-icon-3" class="text-2xl text-primary-gold">+</span>
+                    </button>
+                    <div id="faq-content-3" class="hidden mt-4 text-gray-600">
+                        <p>Yes, Dr. Krisnan's dual expertise in Western medicine and TCM ensures safe, integrated treatment. She carefully reviews your medical history and current medications to create a complementary treatment plan that enhances your overall care.</p>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="400">
+                    <button class="w-full text-left flex justify-between items-center" onclick="toggleFAQ(4)">
+                        <h3 class="font-display text-xl font-semibold text-gradient">What conditions can TCM and acupuncture treat?</h3>
+                        <span id="faq-icon-4" class="text-2xl text-primary-gold">+</span>
+                    </button>
+                    <div id="faq-content-4" class="hidden mt-4 text-gray-600">
+                        <p>TCM and acupuncture can effectively treat chronic pain, stress, digestive issues, hormonal imbalances, post-surgical recovery, neurological conditions, and many other health concerns. Dr. Krisnan will assess your specific condition during consultation.</p>
+                    </div>
+                </div>
+                
+                <div class="package-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="500">
+                    <button class="w-full text-left flex justify-between items-center" onclick="toggleFAQ(5)">
+                        <h3 class="font-display text-xl font-semibold text-gradient">Are the needles sterile and safe?</h3>
+                        <span id="faq-icon-5" class="text-2xl text-primary-gold">+</span>
+                    </button>
+                    <div id="faq-content-5" class="hidden mt-4 text-gray-600">
+                        <p>Absolutely. We use only single-use, sterile, disposable needles that meet international safety standards. All equipment is properly sterilized, and strict hygiene protocols are followed to ensure your safety.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20" style="background: linear-gradient(135deg, var(--primary-navy) 0%, #2C3E50 100%);">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="font-display text-5xl font-bold text-white mb-6" data-aos="fade-up">
+                    Begin Your Healing Journey Today
+                </h2>
+                <p class="text-xl text-gray-300 mb-8" data-aos="fade-up" data-aos-delay="200">
+                    Experience the perfect blend of ancient wisdom and modern medicine with Dr. Devanandhini Krisnan.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
+                    <button class="luxury-button text-lg" onclick="window.open('https://primemotionphysio.com/#contact', '_blank')">
+                        Book Your Consultation
+                    </button>
+                    <button class="luxury-button text-lg" onclick="window.open('https://primemotionphysio.com/', '_blank')">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16" style="background: linear-gradient(135deg, var(--primary-navy) 0%, #2C3E50 100%);">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-8">
+                <h3 class="font-display text-3xl font-bold text-white mb-4">Prime Motion</h3>
+                <p class="text-gray-300 max-w-2xl mx-auto">Personalised care to help you recover, perform, and thrive, with tailored programs that integrate advanced physiotherapy and acupuncture for pain relief and performance.</p>
+            </div>
+            <div class="mb-8">
+                <a href="index.html" class="luxury-button inline-block">
+                    Back to Main Services
+                </a>
+            </div>
+            <div class="section-divider opacity-30"></div>
+            <div class="text-gray-400">
+                <p>&copy; 2025 Prime Motion Physiotherapy Centre Ipoh. All rights reserved.</p>
+                <p class="mt-2">Contact us: <a href="https://primemotionphysio.com/#contact" class="text-white hover:text-yellow-300 transition underline">primemotionphysio.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize AOS and FAQ functionality -->
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        function toggleFAQ(num) {
+            const content = document.getElementById(`faq-content-${num}`);
+            const icon = document.getElementById(`faq-icon-${num}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '-';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -174,6 +174,50 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        
+        .floating-model-btn {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            z-index: 1000;
+            animation: float-gentle 3s ease-in-out infinite;
+        }
+        
+        .model-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-teal) 0%, #67E8F9 100%);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+            color: white;
+        }
+        
+        .model-button:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(26, 188, 156, 0.5);
+            background: linear-gradient(135deg, #1ABC9C 0%, var(--accent-teal) 100%);
+        }
+        
+        .stick-figure-icon {
+            width: 28px;
+            height: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .model-button:hover .stick-figure-icon {
+            transform: scale(1.1);
+        }
+        
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
     </style>
 </head>
 <body style="background-color: var(--soft-cream);">
@@ -186,13 +230,13 @@
                 </h1>
                 <div class="w-24 h-1 mx-auto mb-6" style="background: var(--primary-gold);" data-aos="fade-up" data-aos-delay="200"></div>
                 <p class="text-2xl md:text-3xl font-light mb-8 opacity-90" data-aos="fade-up" data-aos-delay="400">
-                    Luxury Wellness & Recovery Sanctuary
+                    Your Motion. Our Mission.
                 </p>
                 <p class="text-lg md:text-xl mb-12 max-w-3xl mx-auto opacity-80" data-aos="fade-up" data-aos-delay="600">
-                    Experience the pinnacle of therapeutic excellence with our bespoke physiotherapy and acupuncture treatments in Ipoh's most prestigious wellness center.
+                    Personalised care to help you recover, perform, and thrive, with tailored programs that integrate advanced physiotherapy and acupuncture for pain relief and performance.
                 </p>
-                <button class="luxury-button text-lg" onclick="document.getElementById('packages').scrollIntoView({behavior: 'smooth'})" data-aos="fade-up" data-aos-delay="800">
-                    Discover Your Journey
+                <button class="luxury-button text-lg" onclick="document.getElementById('form').scrollIntoView({behavior: 'smooth'})" data-aos="fade-up" data-aos-delay="800">
+                    Free Personalized Treatment Plan
                 </button>
             </div>
         </div>
@@ -241,6 +285,7 @@
                         <option value="mobility">Mobility & Strength</option>
                         <option value="neuro">Neurological Conditions (e.g., Stroke)</option>
                         <option value="general">General Wellness</option>
+                        <option value="rehab">Sports Rehabilitation</option>
                         <option value="acupuncture">Acupuncture & Energy Balance</option>
                     </select>
                 </div>
@@ -274,8 +319,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div class="text-center" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--primary-gold), #F4D03F);">
-                            <svg class="w-10 h-10" style="color: var(--primary-navy);" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <svg class="w-10 h-10" style="color: var(--primary-navy);" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"/>
+                                <path d="M19 15L20.09 18.26L24 19L20.09 19.74L19 23L17.91 19.74L14 19L17.91 18.26L19 15Z"/>
+                                <path d="M5 15L6.09 18.26L10 19L6.09 19.74L5 23L3.91 19.74L0 19L3.91 18.26L5 15Z"/>
                             </svg>
                         </div>
                         <h3 class="font-display text-2xl font-semibold mb-4" style="color: var(--primary-navy);">Innovative Excellence</h3>
@@ -283,9 +330,10 @@
                     </div>
                     <div class="text-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--accent-teal), #67E8F9);">
-                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 102 0V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd"></path>
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <!-- Medical plus sign -->
+                                <rect x="10" y="6" width="4" height="12" rx="1"/>
+                                <rect x="6" y="10" width="12" height="4" rx="1"/>
                             </svg>
                         </div>
                         <h3 class="font-display text-2xl font-semibold mb-4" style="color: var(--primary-navy);">Bespoke Care</h3>
@@ -312,12 +360,34 @@
         </button>
     </div>
 
+    <!-- Floating Model Button -->
+    <div class="floating-model-btn">
+        <button class="model-button" onclick="window.open('model.html', '_blank')" title="View 3D Model">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="stick-figure-icon">
+                <!-- Head -->
+                <circle cx="12" cy="4" r="2"/>
+                <!-- Body -->
+                <line x1="12" y1="6" x2="12" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Arms -->
+                <line x1="8" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Legs -->
+                <line x1="12" y1="16" x2="9" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="12" y1="16" x2="15" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+
     <!-- Footer -->
     <footer class="py-16" style="background: linear-gradient(135deg, var(--primary-navy) 0%, #2C3E50 100%);">
         <div class="container mx-auto px-6 text-center">
             <div class="mb-8">
                 <h3 class="font-display text-3xl font-bold text-white mb-4">Prime Motion</h3>
-                <p class="text-gray-300 max-w-2xl mx-auto">Where luxury meets healing. Experience the future of wellness at Ipoh's premier physiotherapy and acupuncture sanctuary.</p>
+                <p class="text-gray-300 max-w-2xl mx-auto">Personalised care to help you recover, perform, and thrive, with tailored programs that integrate advanced physiotherapy and acupuncture for pain relief and performance.</p>
+            </div>
+            <div class="mb-8">
+                <a href="acupuncture.html" class="luxury-button inline-block">
+                    Explore TCM & Acupuncture
+                </a>
             </div>
             <div class="section-divider opacity-30"></div>
             <div class="text-gray-400">
@@ -359,6 +429,8 @@
                     recommendation = 'Our "Mastery" Neurological Rehabilitation Package, featuring Malaysia\'s first Ceiling Hoist System and advanced electrotherapy, is ideal for stroke recovery and neurological conditions. This comprehensive 12+1 session program provides the intensive care needed for optimal recovery.';
                 } else if (concern === 'mobility' || ageGroup === '18-30' || ageGroup === '31-50') {
                     recommendation = 'The "Transformation" Mobility & Strength Package, with our signature exercise therapy and manual therapy techniques, is perfect for improving movement and building strength. Our 6-session program will help you achieve lasting results.';
+                } else if (concern === 'rehab') {
+                    recommendation = 'Our "Elite Performance" Sports Rehabilitation Package, designed specifically for athletes and active individuals. This comprehensive program combines advanced physiotherapy, sports-specific exercise therapy, and performance optimization techniques. Our 8-session package will help you recover from sports injuries and enhance your athletic performance.';
                 } else if (concern === 'pain') {
                     recommendation = 'Our "Renaissance" Pain Relief Package, including advanced laser therapy and therapeutic hot & cold treatments, will help soothe discomfort and promote healing. This 3-session program targets pain at its source.';
                 } else if (concern === 'acupuncture') {
