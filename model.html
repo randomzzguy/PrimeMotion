@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Musculoskeletal System - Realistic Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .model-container {
+            flex: 2;
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .model-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: ambientGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambientGlow {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .control-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .control-btn.active {
+            background: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .body-model {
+            width: 500px;
+            height: 700px;
+            position: relative;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotateX(5deg); }
+            50% { transform: translateY(-20px) rotateX(5deg); }
+        }
+
+        .anatomical-svg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .body-part {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            fill: rgba(255, 255, 255, 0.9);
+            stroke: #ffffff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        .body-part:hover {
+            fill: rgba(100, 200, 255, 0.8);
+            stroke: #64c8ff;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 15px rgba(100, 200, 255, 0.8));
+        }
+
+        .body-part.selected {
+            fill: rgba(231, 76, 60, 0.4);
+            stroke: #e74c3c;
+            stroke-width: 4;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { filter: drop-shadow(0 0 0 rgba(231, 76, 60, 0.7)); }
+            70% { filter: drop-shadow(0 0 15px rgba(231, 76, 60, 0.7)); }
+            100% { filter: drop-shadow(0 0 0 rgba(231, 76, 60, 0.7)); }
+        }
+
+        .info-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .pain-list {
+            list-style: none;
+        }
+
+        .pain-item {
+            background: #f8f9fa;
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pain-item .area {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .pain-item .time {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .clear-all {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .clear-all:hover {
+            background: #7f8c8d;
+        }
+
+        .instructions {
+            background: rgba(241, 196, 15, 0.1);
+            border: 2px solid #f1c40f;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: #f39c12;
+        }
+
+        .view-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .body-model {
+                width: 350px;
+                height: 500px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 Interactive 3D Musculoskeletal System</h1>
+        <p>Professional anatomical model for pain assessment</p>
+    </div>
+
+    <div class="main-container">
+        <div class="model-container">
+            <div class="controls">
+                <button class="control-btn active" onclick="setView('front')">Anterior View</button>
+                <button class="control-btn" onclick="setView('back')">Posterior View</button>
+                <button class="control-btn" onclick="setView('side')">Lateral View</button>
+                <button class="control-btn" onclick="rotateModel()">🔄 Rotate</button>
+            </div>
+
+            <div class="body-model" id="bodyModel">
+                <div class="view-indicator" id="viewIndicator">Anterior View</div>
+                
+                <!-- Front View SVG -->
+                <svg class="anatomical-svg" id="frontView" viewBox="0 0 400 600" style="display: block;">
+                    <!-- Head with more realistic shape -->
+                    <path class="body-part" data-part="Head" d="M 200 15 Q 235 20 245 50 Q 240 85 220 95 Q 200 100 180 95 Q 160 85 155 50 Q 165 20 200 15 Z" onclick="selectPart('Head')"/>
+                    
+                    <!-- Neck with natural curve -->
+                    <path class="body-part" data-part="Neck" d="M 185 95 Q 200 100 215 95 L 220 125 Q 200 130 180 125 Z" onclick="selectPart('Neck')"/>
+                    
+                    <!-- Shoulders with realistic slope -->
+                    <path class="body-part" data-part="Left Shoulder" d="M 120 140 Q 140 135 155 145 Q 150 170 135 180 Q 115 175 105 160 Q 110 145 120 140 Z" onclick="selectPart('Left Shoulder')"/>
+                    <path class="body-part" data-part="Right Shoulder" d="M 280 140 Q 290 145 295 160 Q 285 175 265 180 Q 250 170 245 145 Q 260 135 280 140 Z" onclick="selectPart('Right Shoulder')"/>
+                    
+                    <!-- Chest with realistic ribcage shape -->
+                    <path class="body-part" data-part="Chest" d="M 155 125 Q 200 120 245 125 Q 250 140 245 160 Q 240 180 230 195 Q 200 200 170 195 Q 160 180 155 160 Q 150 140 155 125 Z" onclick="selectPart('Chest')"/>
+                    
+                    <!-- Arms with muscle definition -->
+                    <path class="body-part" data-part="Left Upper Arm" d="M 125 180 Q 135 175 140 190 L 135 250 Q 130 265 120 270 Q 110 265 105 250 L 100 190 Q 105 175 115 180 Q 120 178 125 180 Z" onclick="selectPart('Left Upper Arm')"/>
+                    <path class="body-part" data-part="Right Upper Arm" d="M 275 180 Q 285 175 295 190 L 300 250 Q 295 265 285 270 Q 275 265 270 250 L 265 190 Q 270 175 275 180 Z" onclick="selectPart('Right Upper Arm')"/>
+                    
+                    <!-- Elbows with joint definition -->
+                    <ellipse class="body-part" data-part="Left Elbow" cx="112" cy="275" rx="12" ry="18" onclick="selectPart('Left Elbow')"/>
+                    <ellipse class="body-part" data-part="Right Elbow" cx="288" cy="275" rx="12" ry="18" onclick="selectPart('Right Elbow')"/>
+                    
+                    <!-- Forearms with natural taper -->
+                    <path class="body-part" data-part="Left Forearm" d="M 105 285 Q 115 280 120 295 L 115 350 Q 110 365 100 370 Q 90 365 85 350 L 80 295 Q 85 280 95 285 Q 100 283 105 285 Z" onclick="selectPart('Left Forearm')"/>
+                    <path class="body-part" data-part="Right Forearm" d="M 295 285 Q 305 280 315 295 L 320 350 Q 315 365 305 370 Q 295 365 285 350 L 280 295 Q 285 280 295 285 Z" onclick="selectPart('Right Forearm')"/>
+                    
+                    <!-- Hands with finger indication -->
+                    <path class="body-part" data-part="Left Hand" d="M 85 370 Q 95 365 105 370 Q 110 380 105 395 Q 100 405 90 400 Q 80 395 75 385 Q 80 375 85 370 Z" onclick="selectPart('Left Hand')"/>
+                    <path class="body-part" data-part="Right Hand" d="M 315 370 Q 325 375 320 385 Q 315 395 305 400 Q 295 405 290 395 Q 285 380 290 370 Q 300 365 315 370 Z" onclick="selectPart('Right Hand')"/>
+                    
+                    <!-- Abdomen with natural waist -->
+                    <path class="body-part" data-part="Abdomen" d="M 170 195 Q 200 190 230 195 Q 235 210 230 230 Q 225 250 220 265 Q 200 270 180 265 Q 175 250 170 230 Q 165 210 170 195 Z" onclick="selectPart('Abdomen')"/>
+                    
+                    <!-- Pelvis/Hips with realistic bone structure -->
+                    <path class="body-part" data-part="Left Hip" d="M 160 265 Q 175 260 185 270 Q 180 290 175 305 Q 165 315 155 310 Q 145 300 150 285 Q 155 270 160 265 Z" onclick="selectPart('Left Hip')"/>
+                    <path class="body-part" data-part="Right Hip" d="M 240 265 Q 250 270 255 285 Q 250 300 240 310 Q 230 315 220 305 Q 215 290 220 270 Q 230 260 240 265 Z" onclick="selectPart('Right Hip')"/>
+                    
+                    <!-- Thighs with quadriceps definition -->
+                    <path class="body-part" data-part="Left Thigh" d="M 155 315 Q 170 310 180 320 Q 185 340 180 370 Q 175 400 170 415 Q 165 425 155 420 Q 145 415 140 400 Q 135 370 140 340 Q 145 320 155 315 Z" onclick="selectPart('Left Thigh')"/>
+                    <path class="body-part" data-part="Right Thigh" d="M 245 315 Q 255 320 260 340 Q 265 370 260 400 Q 255 415 245 420 Q 235 425 230 415 Q 225 400 220 370 Q 215 340 220 320 Q 230 310 245 315 Z" onclick="selectPart('Right Thigh')"/>
+                    
+                    <!-- Knees with patella shape -->
+                    <ellipse class="body-part" data-part="Left Knee" cx="162" cy="435" rx="15" ry="20" onclick="selectPart('Left Knee')"/>
+                    <ellipse class="body-part" data-part="Right Knee" cx="238" cy="435" rx="15" ry="20" onclick="selectPart('Right Knee')"/>
+                    
+                    <!-- Shins with tibia definition -->
+                    <path class="body-part" data-part="Left Shin" d="M 150 450 Q 165 445 175 455 Q 170 480 165 510 Q 160 535 155 545 Q 150 550 145 545 Q 140 535 135 510 Q 130 480 135 455 Q 145 445 150 450 Z" onclick="selectPart('Left Shin')"/>
+                    <path class="body-part" data-part="Right Shin" d="M 250 450 Q 255 445 265 455 Q 270 480 265 510 Q 260 535 255 545 Q 250 550 245 545 Q 240 535 235 510 Q 230 480 235 455 Q 245 445 250 450 Z" onclick="selectPart('Right Shin')"/>
+                    
+                    <!-- Feet with arch and toe definition -->
+                    <path class="body-part" data-part="Left Foot" d="M 140 545 Q 155 540 170 545 Q 175 555 170 570 Q 165 580 155 575 Q 145 580 135 575 Q 125 570 130 555 Q 135 545 140 545 Z" onclick="selectPart('Left Foot')"/>
+                    <path class="body-part" data-part="Right Foot" d="M 260 545 Q 265 545 270 555 Q 275 570 265 575 Q 255 580 245 575 Q 235 580 230 570 Q 225 555 230 545 Q 245 540 260 545 Z" onclick="selectPart('Right Foot')"/>
+                </svg>
+
+                <!-- Back View SVG -->
+                <svg class="anatomical-svg" id="backView" viewBox="0 0 400 600" style="display: none;">
+                    <!-- Head (back) with realistic skull shape -->
+                    <path class="body-part" data-part="Head" d="M 200 15 Q 235 20 245 50 Q 240 85 220 95 Q 200 100 180 95 Q 160 85 155 50 Q 165 20 200 15 Z" onclick="selectPart('Head')"/>
+                    
+                    <!-- Neck (back) with cervical curve -->
+                    <path class="body-part" data-part="Neck" d="M 185 95 Q 200 100 215 95 L 220 125 Q 200 130 180 125 Z" onclick="selectPart('Neck')"/>
+                    
+                    <!-- Upper Back with trapezius definition -->
+                    <path class="body-part" data-part="Upper Back" d="M 155 125 Q 200 120 245 125 Q 250 140 245 160 Q 240 180 230 195 Q 200 200 170 195 Q 160 180 155 160 Q 150 140 155 125 Z" onclick="selectPart('Upper Back')"/>
+                    
+                    <!-- Shoulders (back) with deltoid shape -->
+                    <path class="body-part" data-part="Left Shoulder" d="M 120 140 Q 140 135 155 145 Q 150 170 135 180 Q 115 175 105 160 Q 110 145 120 140 Z" onclick="selectPart('Left Shoulder')"/>
+                    <path class="body-part" data-part="Right Shoulder" d="M 280 140 Q 290 145 295 160 Q 285 175 265 180 Q 250 170 245 145 Q 260 135 280 140 Z" onclick="selectPart('Right Shoulder')"/>
+                    
+                    <!-- Arms (back) with triceps definition -->
+                    <path class="body-part" data-part="Left Upper Arm" d="M 125 180 Q 135 175 140 190 L 135 250 Q 130 265 120 270 Q 110 265 105 250 L 100 190 Q 105 175 115 180 Q 120 178 125 180 Z" onclick="selectPart('Left Upper Arm')"/>
+                    <path class="body-part" data-part="Right Upper Arm" d="M 275 180 Q 285 175 295 190 L 300 250 Q 295 265 285 270 Q 275 265 270 250 L 265 190 Q 270 175 275 180 Z" onclick="selectPart('Right Upper Arm')"/>
+                    
+                    <!-- Lower Back with lumbar curve -->
+                    <path class="body-part" data-part="Lower Back" d="M 170 195 Q 200 190 230 195 Q 235 210 230 230 Q 225 250 220 265 Q 200 270 180 265 Q 175 250 170 230 Q 165 210 170 195 Z" onclick="selectPart('Lower Back')"/>
+                    
+                    <!-- Forearms (back) with natural taper -->
+                    <path class="body-part" data-part="Left Forearm" d="M 105 285 Q 115 280 120 295 L 115 350 Q 110 365 100 370 Q 90 365 85 350 L 80 295 Q 85 280 95 285 Q 100 283 105 285 Z" onclick="selectPart('Left Forearm')"/>
+                    <path class="body-part" data-part="Right Forearm" d="M 295 285 Q 305 280 315 295 L 320 350 Q 315 365 305 370 Q 295 365 285 350 L 280 295 Q 285 280 295 285 Z" onclick="selectPart('Right Forearm')"/>
+                    
+                    <!-- Hands (back) with knuckle definition -->
+                    <path class="body-part" data-part="Left Hand" d="M 85 370 Q 95 365 105 370 Q 110 380 105 395 Q 100 405 90 400 Q 80 395 75 385 Q 80 375 85 370 Z" onclick="selectPart('Left Hand')"/>
+                    <path class="body-part" data-part="Right Hand" d="M 315 370 Q 325 375 320 385 Q 315 395 305 400 Q 295 405 290 395 Q 285 380 290 370 Q 300 365 315 370 Z" onclick="selectPart('Right Hand')"/>
+                    
+                    <!-- Glutes with realistic muscle shape -->
+                    <path class="body-part" data-part="Left Glute" d="M 160 265 Q 175 260 185 270 Q 180 290 175 305 Q 165 315 155 310 Q 145 300 150 285 Q 155 270 160 265 Z" onclick="selectPart('Left Glute')"/>
+                    <path class="body-part" data-part="Right Glute" d="M 240 265 Q 250 270 255 285 Q 250 300 240 310 Q 230 315 220 305 Q 215 290 220 270 Q 230 260 240 265 Z" onclick="selectPart('Right Glute')"/>
+                    
+                    <!-- Hamstrings with muscle definition -->
+                    <path class="body-part" data-part="Left Hamstring" d="M 155 315 Q 170 310 180 320 Q 185 340 180 370 Q 175 400 170 415 Q 165 425 155 420 Q 145 415 140 400 Q 135 370 140 340 Q 145 320 155 315 Z" onclick="selectPart('Left Hamstring')"/>
+                    <path class="body-part" data-part="Right Hamstring" d="M 245 315 Q 255 320 260 340 Q 265 370 260 400 Q 255 415 245 420 Q 235 425 230 415 Q 225 400 220 370 Q 215 340 220 320 Q 230 310 245 315 Z" onclick="selectPart('Right Hamstring')"/>
+                    
+                    <!-- Calves with gastrocnemius shape -->
+                    <path class="body-part" data-part="Left Calf" d="M 150 450 Q 165 445 175 455 Q 170 480 165 510 Q 160 535 155 545 Q 150 550 145 545 Q 140 535 135 510 Q 130 480 135 455 Q 145 445 150 450 Z" onclick="selectPart('Left Calf')"/>
+                    <path class="body-part" data-part="Right Calf" d="M 250 450 Q 255 445 265 455 Q 270 480 265 510 Q 260 535 255 545 Q 250 550 245 545 Q 240 535 235 510 Q 230 480 235 455 Q 245 445 250 450 Z" onclick="selectPart('Right Calf')"/>
+                    
+                    <!-- Feet (back) with heel definition -->
+                    <path class="body-part" data-part="Left Foot" d="M 140 545 Q 155 540 170 545 Q 175 555 170 570 Q 165 580 155 575 Q 145 580 135 575 Q 125 570 130 555 Q 135 545 140 545 Z" onclick="selectPart('Left Foot')"/>
+                    <path class="body-part" data-part="Right Foot" d="M 260 545 Q 265 545 270 555 Q 275 570 265 575 Q 255 580 245 575 Q 235 580 230 570 Q 225 555 230 545 Q 245 540 260 545 Z" onclick="selectPart('Right Foot')"/>
+                </svg>
+
+                <!-- Side View SVG -->
+                <svg class="anatomical-svg" id="sideView" viewBox="0 0 400 600" style="display: none;">
+                    <!-- Head (side) with profile shape -->
+                    <path class="body-part" data-part="Head" d="M 170 15 Q 190 10 220 20 Q 240 30 245 50 Q 240 70 235 85 Q 225 95 210 98 Q 190 100 175 95 Q 160 85 155 65 Q 155 45 165 30 Q 170 20 170 15 Z" onclick="selectPart('Head')"/>
+                    
+                    <!-- Neck (side) with natural curve -->
+                    <path class="body-part" data-part="Neck" d="M 185 95 Q 195 100 205 95 L 210 125 Q 200 130 190 125 Z" onclick="selectPart('Neck')"/>
+                    
+                    <!-- Torso (side profile) with chest curve -->
+                    <path class="body-part" data-part="Chest" d="M 175 125 Q 185 120 195 125 Q 205 130 210 145 Q 215 165 210 185 Q 205 200 195 205 Q 185 200 175 195 Q 165 180 170 160 Q 170 140 175 125 Z" onclick="selectPart('Chest')"/>
+                    
+                    <!-- Shoulder (side) with deltoid shape -->
+                    <path class="body-part" data-part="Shoulder" d="M 150 140 Q 165 135 175 145 Q 170 165 160 175 Q 145 170 135 160 Q 140 145 150 140 Z" onclick="selectPart('Shoulder')"/>
+                    
+                    <!-- Arm (side) with realistic proportions -->
+                    <path class="body-part" data-part="Upper Arm" d="M 135 180 Q 145 175 150 190 L 145 250 Q 140 265 130 270 Q 120 265 115 250 L 110 190 Q 115 175 125 180 Q 130 178 135 180 Z" onclick="selectPart('Upper Arm')"/>
+                    <path class="body-part" data-part="Forearm" d="M 115 285 Q 125 280 130 295 L 125 350 Q 120 365 110 370 Q 100 365 95 350 L 90 295 Q 95 280 105 285 Q 110 283 115 285 Z" onclick="selectPart('Forearm')"/>
+                    <path class="body-part" data-part="Hand" d="M 95 370 Q 105 365 115 370 Q 120 380 115 395 Q 110 405 100 400 Q 90 395 85 385 Q 90 375 95 370 Z" onclick="selectPart('Hand')"/>
+                    
+                    <!-- Spine/Back with natural S-curve -->
+                    <path class="body-part" data-part="Spine" d="M 200 125 Q 205 140 200 160 Q 195 180 200 200 Q 205 220 200 240 Q 195 255 200 265 Q 205 270 200 275" stroke-width="8" fill="none" stroke="rgba(255, 255, 255, 0.9)" onclick="selectPart('Spine')"/>
+                    
+                    <!-- Hip (side) with pelvic shape -->
+                    <path class="body-part" data-part="Hip" d="M 180 265 Q 195 260 210 270 Q 215 285 210 300 Q 205 315 195 320 Q 185 315 175 305 Q 170 290 175 275 Q 180 265 180 265 Z" onclick="selectPart('Hip')"/>
+                    
+                    <!-- Leg (side) with realistic muscle definition -->
+                    <path class="body-part" data-part="Thigh" d="M 185 320 Q 200 315 215 325 Q 220 345 215 375 Q 210 405 205 420 Q 200 430 190 425 Q 180 420 175 405 Q 170 375 175 345 Q 180 325 185 320 Z" onclick="selectPart('Thigh')"/>
+                    <ellipse class="body-part" data-part="Knee" cx="192" cy="435" rx="15" ry="20" onclick="selectPart('Knee')"/>
+                    <path class="body-part" data-part="Shin" d="M 180 450 Q 195 445 205 455 Q 200 480 195 510 Q 190 535 185 545 Q 180 550 175 545 Q 170 535 165 510 Q 160 480 165 455 Q 175 445 180 450 Z" onclick="selectPart('Shin')"/>
+                    <path class="body-part" data-part="Foot" d="M 170 545 Q 185 540 210 545 Q 220 555 215 570 Q 210 580 200 575 Q 185 580 170 575 Q 155 570 160 555 Q 165 545 170 545 Z" onclick="selectPart('Foot')"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="instructions">
+                <strong>Instructions:</strong><br>
+                • Click on anatomical regions where pain is experienced<br>
+                • Switch between anterior, posterior, and lateral views<br>
+                • Selected areas are highlighted and tracked<br>
+                • Use this for comprehensive pain assessment
+            </div>
+            
+            <h3>📋 Pain Assessment Report</h3>
+            <ul class="pain-list" id="painList">
+                <li style="color: #7f8c8d; font-style: italic; text-align: center; padding: 2rem;">
+                    No pain areas reported yet.<br>Click on anatomical regions to document pain locations.
+                </li>
+            </ul>
+            <button class="clear-all" onclick="clearAllPain()" id="clearBtn" style="display: none;">Clear All Selections</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedParts = new Set();
+        let currentView = 'front';
+        let rotationAngle = 0;
+
+        function selectPart(partName) {
+            // Find all elements with this part name across all views
+            const elements = document.querySelectorAll(`[data-part="${partName}"]`);
+            
+            if (selectedParts.has(partName)) {
+                // Deselect
+                selectedParts.delete(partName);
+                elements.forEach(el => el.classList.remove('selected'));
+            } else {
+                // Select
+                selectedParts.add(partName);
+                elements.forEach(el => el.classList.add('selected'));
+            }
+            
+            updatePainList();
+        }
+
+        function updatePainList() {
+            const painList = document.getElementById('painList');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            if (selectedParts.size === 0) {
+                painList.innerHTML = `
+                    <li style="color: #7f8c8d; font-style: italic; text-align: center; padding: 2rem;">
+                        No pain areas reported yet.<br>Click on anatomical regions to document pain locations.
+                    </li>
+                `;
+                clearBtn.style.display = 'none';
+            } else {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                
+                painList.innerHTML = '';
+                Array.from(selectedParts).sort().forEach(part => {
+                    const li = document.createElement('li');
+                    li.className = 'pain-item';
+                    li.innerHTML = `
+                        <div>
+                            <div class="area">${part}</div>
+                            <div class="time">Reported at ${timeString}</div>
+                        </div>
+                        <button class="remove-btn" onclick="removePain('${part}')">Remove</button>
+                    `;
+                    painList.appendChild(li);
+                });
+                clearBtn.style.display = 'block';
+            }
+        }
+
+        function removePain(partName) {
+            selectedParts.delete(partName);
+            const elements = document.querySelectorAll(`[data-part="${partName}"]`);
+            elements.forEach(el => el.classList.remove('selected'));
+            updatePainList();
+        }
+
+        function clearAllPain() {
+            selectedParts.clear();
+            document.querySelectorAll('.body-part.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+            updatePainList();
+        }
+
+        function setView(view) {
+            currentView = view;
+            const frontView = document.getElementById('frontView');
+            const backView = document.getElementById('backView');
+            const sideView = document.getElementById('sideView');
+            const viewIndicator = document.getElementById('viewIndicator');
+            const buttons = document.querySelectorAll('.control-btn');
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Hide all views
+            frontView.style.display = 'none';
+            backView.style.display = 'none';
+            sideView.style.display = 'none';
+            
+            // Show selected view
+            switch(view) {
+                case 'front':
+                    frontView.style.display = 'block';
+                    viewIndicator.textContent = 'Anterior View';
+                    break;
+                case 'back':
+                    backView.style.display = 'block';
+                    viewIndicator.textContent = 'Posterior View';
+                    break;
+                case 'side':
+                    sideView.style.display = 'block';
+                    viewIndicator.textContent = 'Lateral View';
+                    break;
+            }
+        }
+
+        function rotateModel() {
+            rotationAngle += 15;
+            const bodyModel = document.getElementById('bodyModel');
+            bodyModel.style.animation = 'none';
+            bodyModel.style.transform = `rotateY(${rotationAngle}deg) rotateX(${rotationAngle * 0.3}deg) translateY(-10px)`;
+            
+            // Re-enable floating animation after rotation
+            setTimeout(() => {
+                bodyModel.style.animation = 'float 6s ease-in-out infinite';
+            }, 500);
+        }
+
+        // Add professional hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const bodyParts = document.querySelectorAll('.body-part');
+            
+            bodyParts.forEach(part => {
+                part.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'scale(1.05)';
+                    }
+                });
+                
+                part.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'scale(1)';
+                    }
+                });
+            });
+        });
+
+        // Initialize
+        updatePainList();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968c4b3fa6ffa70a',t:'MTc1NDEyNDI3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
